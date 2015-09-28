@@ -13,7 +13,7 @@ Get thumb from a CDN via [Slideshare API (need to register own)](http://www.slid
 
 ```
 <?php if ( !empty( rwmb_meta( 'rw_cdnurl' )  )) { ?>
-	   <img src="<?php echo rwmb_meta( 'rw_cdnurl' ); ?>" width="210" height="143" class="attachment-homepage-thumb wp-post-image" alt="" title="">
+  <img src="<?php echo rwmb_meta( 'rw_cdnurl' ); ?>" width="210" height="143">
 <?php } else { ?>
 <?php the_post_thumbnail('homepage-thumb', array('alt' => '', 'title' => '')) ?>
 <?php } ?>
