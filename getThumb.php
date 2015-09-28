@@ -1,20 +1,31 @@
 <?php
-
-
-/* === CUSTOM METABOXES ==== */
-/**
-============== SLIDESHARE THUMBS==============
-paste in ss url
-get cdn url
-save the url as post meta
-if that post meta, show it instead of thumb
-**/
+/* === FUNCTIONS ==== */
 
 add_filter( 'rwmb_meta_boxes', 'tooltip_register_meta_boxes' );
+
 function tooltip_register_meta_boxes( $meta_boxes )
 {
     $prefix = 'rw_';
-
+    // metabox tooltip
+    $meta_boxes[] = array(
+        'id'       => 'tooltip',
+        'title'    => 'Tooltip',
+        'pages'    => array( 'ehproject' ),
+        'context'  => 'normal',
+        'priority' => 'high',
+        'fields' => array(
+            array(
+                'name'  => 'Tooltip HTML contents',
+                'desc'  => 'Type content in here',
+                'id'    => $prefix . 'content',
+                'type'  => 'textarea',
+                'std'   => 'No further information',
+                'class' => 'tootltip-class',
+                'clone' => false,
+            ),
+        )
+    );
+    // metabox slideshare
     $meta_boxes[] = array(
         'title'    => 'Slideshare Thumbnail',
         'pages'    => array( 'post', 'page' ),
@@ -34,25 +45,21 @@ function tooltip_register_meta_boxes( $meta_boxes )
                 'size' => 60,
                 'clone' => false,
             ),
-
         )
     );
 
     return $meta_boxes;
 }
 
+function getSlideshareThumb() {
 
-
-function getSlideshareThumb( ) {
-
-  global $post;
-
-  $post_id = $post->ID;
+  //global $post;
+  //$post_id = $post->ID;
 
   $url = rwmb_meta( 'rw_ssurl' );
 
-  $key = 'xxxxxxxx';
-  $sec = 'xxxxxxxx';
+  $key = 'DATBl1YA';
+  $sec = 'pEet3vrG';
   $t=time();
   $str = $sec . $t;
   $h = sha1($str);
@@ -69,16 +76,16 @@ function getSlideshareThumb( ) {
 
 }
 
-// only if CDN link empty...
-function my_admin_notice() {
- if ( !empty( rwmb_meta( 'rw_ssurl' ) ) && empty( rwmb_meta( 'rw_cdnurl' ) )  ) {
+add_action( 'admin_notices', 'ss_admin_notice' );
+add_action( 'save_post', 'ss_admin_notice' );
+
+function ss_admin_notice() {
+if ( !empty( rwmb_meta( 'rw_ssurl' ) ) && empty( rwmb_meta( 'rw_cdnurl' ) )  ) {
     ?>
     <div class="updated">
-        <p><?php _e( 'The SlideShare Thumbnail URL: ', 'thumb-text-domain' ); ?> </p>
-        <p><?php getSlideshareThumb(); ?> </p>
+        <p>The SlideShare Thumbnail URL:</p>
+        <p> <?php getSlideshareThumb(); ?> </p>
     </div>
     <?php
   }
 }
-add_action( 'admin_notices', 'my_admin_notice' );
-add_action( 'save_post', 'my_admin_notice' );
