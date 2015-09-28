@@ -58,8 +58,8 @@ function getSlideshareThumb() {
 
   $url = rwmb_meta( 'rw_ssurl' );
 
-  $key = 'DATBl1YA';
-  $sec = 'pEet3vrG';
+  $key = 'xxxxxxx';
+  $sec = 'xxxxxxx';
   $t=time();
   $str = $sec . $t;
   $h = sha1($str);
